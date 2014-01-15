@@ -1,8 +1,8 @@
-#First R Program for Fish 505
+#Second R Program for Fish 505
 #Mike Hawkshaw
-#Jan 7 2014
+#Jan 15 2014
 #
-#Very Simple Bull Trout Population Model
+#Chinook modeling
 #########################################################################################################
 #Model Steps:  Please See presentation figures for Bull Trout Life Hstory Diagram
 #########################################################################################################
