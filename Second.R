@@ -1,8 +1,8 @@
 #Second R Program for Fish 505
 #Mike Hawkshaw
 #Jan 15 2014
-#
-#COHO modeling
+#CHANGED FOR CATARINA
+#COHO modeling 
 #########################################################################################################
 #Model Steps:  
 #########################################################################################################
@@ -111,11 +111,11 @@ s<-rep(s_obs,length=n_years)					#initialize our spawning stock
 r<-rep(NA,length=n_years)						#vector to hold our recruits
 yt<-rep(NA,length=n_years)						#vector to hold our yeild
 
-hr<-rep(0.6,length=n_years)
+hr<-rep(0.25,length=n_years)
 
 for(y in (k+1):n_years)								#generate a population given HR and other parameters
 {
-	r[y]<-ricker_predator(s[y-k],ricker_a_p,ricker_b_p,ricker_q_p,pred[y],wt[y-k])		#generate a recruitments
+	r[y]<-ricker_predator(s[y-k],ricker_a_p,ricker_b_p,ricker_q_p,pred[35],wt[y-k])		#generate a recruitments
 	s[y]<-r[y]*(1-hr[y])										#spawners are the ones who survive our fishery
 	yt[y]<-r[y]*hr[y]											#catch are the ones who dont
 }
