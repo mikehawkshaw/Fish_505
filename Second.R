@@ -100,6 +100,7 @@ ricker_b_p<- -l_pred$coeff[2]
 ricker_q_p<- -l_pred$coeff[3]
 
 k<-3
+n_years<-length(years)
 
 #Generate Recruitment deviations (optional)
 wt<-rnorm(n_years,0,0.6)						#normaly distributed proicess error
@@ -112,9 +113,9 @@ yt<-rep(NA,length=n_years)						#vector to hold our yeild
 
 hr<-rep(0.6,length=n_years)
 
-for(y in 6:n_years)								#generate a population given HR and other parameters
+for(y in (k+1):n_years)								#generate a population given HR and other parameters
 {
-	r[y]<-ricker_predator(s[y-k],ricker_a,ricker_b,pred[y],wt[y-k])		#generate a recruitments
+	r[y]<-ricker_predator(s[y-k],ricker_a_p,ricker_b_p,ricker_q_p,pred[y],wt[y-k])		#generate a recruitments
 	s[y]<-r[y]*(1-hr[y])										#spawners are the ones who survive our fishery
 	yt[y]<-r[y]*hr[y]											#catch are the ones who dont
 }
