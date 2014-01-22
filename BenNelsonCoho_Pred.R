@@ -19,9 +19,10 @@
 #########################################################################################################
 #
 #Read in Coho data from file
-#set up data structures
-#build linear model
-#	
+#fit linear models to that data
+#do a very quick and dirty model selection excersize
+#Brute force equilibrium analysis
+#
 #########################################################################################################
 #Header
 #########################################################################################################
@@ -37,42 +38,22 @@ setwd("/Users/mikehawkshaw/Desktop/Fish_505_Example/Fish_505")			#it makes readi
 #Dynamics - Subs
 
 #RICKER REC SUB
-ricker_simple<-function(x,a,b,proc_error)				#a function to calculate the return associated with any spawning stock size 
-{														#given ricker _a ricker_b and Process errors
-	y<-x*exp(a-b*x+proc_error)
+ricker_simple<-function(x,a,b,wt)				#a function to calculate the return associated with any spawning stock size 
+{
+	y=x*exp(a-b*x+wt)							#Simple ricker function chosen for utility of parameters														#given ricker _a ricker_b and Process errors
 
 return(y)
 }
 
 #RICKER REC SUB
-ricker_predator<-function(x,a,b,q,p,proc_error)				#a function to calculate the return associated with any spawning stock size 
-{															#given ricker _a ricker_b and Process errors
-	y<-x*exp(a-b*x-q*p+proc_error)							#incorperating predator effects
+ricker_predator<-function(x,a,b,q,p,wt)			#a function to calculate the return associated with any spawning stock size 
+{												#given ricker _a ricker_b and Process errors
+	y=x*exp(a-b*x-q*p+wt)						#more complicated predator impact ricker model see walters et al 1986
 
 return(y)
 }
 
 #Plotting Sub
-
-second_axis<-function(x,y1,y1_1,y1_2,y2,ax_1,ax_2)
-{
-	par(mar=c(5, 12, 4, 4) + 0.1)
-	plot(x,y1,type="b",col="black",lty=1,lwd=1.2,axes=T,xlab="", ylab="", main="", ylim=c(0,max(y1,y1_1,y1_2,na.rm=T)))
-	lines(x,y1_1,type="b",col="dark red")
-	lines(x,y1_2,type="b",col="dark green")
-	axis(2, ylim=c(0,max(y1,na.rm=T)),col="black",lwd=2)
-	mtext(2,text=ax_1,line=2)
-
-	#plot Harvest Rate vs Populations Extinct n second axis
-	par(new=T)
-	plot(x,y2,type="l",col="red",lty=1,lwd=1.2,axes=F,xlab="", ylab="", main="")
-	axis(2, ylim=c(0,max(y2,na.rm=T)),lwd=2,line=3.5, col="red")
-	mtext(2,text=ax_2,line=5.5, col="red")
-}
-
-#########################################################################################################
-#Graphics - Subs
-
 
 #########################################################################################################
 #Main
@@ -90,6 +71,27 @@ pred_obs<-coho_time_series$Piniped				#estimated predator populations size (DFO 
 n_years<-length(years)							#how many years of data is there
 k<-3											#interior fraser coho life history is very specific
 
+r_derived<-s_obs/(1-hr_obs)						#R=S/(1-hr) relationship between returns and harvest rate
+#Index by Brood Year for sanity
+s_by<-s_obs[1:(n_years-k)]						#spawner b in brood year
+r_by<-r_derived[(k+1):n_years]					#associated recruitment
+pred_by<-pred_obs[3:(n_years-1)]
+
+
+lnrs<-log(r_by/s_by)							#ln(R/S) for model fitting
+
 #fit models to data
+#?lm()
+
+l_simple<-lm(lnrs~s_by)
+l_pred<-lm(lnrs~s_by+pred_obs[k+1])
 
 #Simulate population dynamics
+
+
+
+
+
+
+
+
